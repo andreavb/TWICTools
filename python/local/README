@@ -1,0 +1,52 @@
+=============
+TWIC Selector
+=============
+
+Simple Python script to download and process The Week In Chess (TWIC) latest issue.
+
+=======
+License
+=======
+
+This software is licensed under Beer-ware.
+See LICENSE file for more details.
+
+=====
+Usage
+=====
+
+This program is suitable to run on Linux and Mac platforms.
+It has not been tested on any Windows devices.
+
+=====
+Setup
+=====
+
+No compiling or building is required!
+
+Download the code from Github using:
+$ git clone https://github.com/andreavb/TWICTools.git
+
+Change the variables "rating_threshold" and "my_repertoire_list" to better change your needs.
+$ cd TWICTools/python/local
+$ vim select_twic.py
+
+Look for the following lines to edit them:
+===
+# define rating relevance threshold
+rating_threshold = 2300
+# define list of interesting ECO codes
+my_repertoire_list = ['A00', 'A01']
+===
+
+=======
+Running
+=======
+
+Easy stuff. Once you changed the above variables, just run:
+$ python select_twic.py
+
+Some brand new files will appear on your working directory:
+last_twic.zip: the latest PGN file, zipped, as downloaded from TWIC page.
+twicXXXX.pgn: the latest PGN file, extracted.
+relevant.pgn: a selection of games from twicXXXX.pgn that match your rating and ECO requirements.

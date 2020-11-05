@@ -1,0 +1,161 @@
+=============
+TWIC Selector
+=============
+
+Simple Python script to download and process The Week In Chess (TWIC) latest issue.
+
+=======
+License
+=======
+
+This software is licensed under Beer-ware.
+See LICENSE file for more details.
+
+=====
+Usage
+=====
+
+This program runs on AWS Lambda.
+
+============
+Requirements
+============
+
+The following AWS Services will be used:
+1. IAM (Identity and Access Management)
+2. SNS (Simple Notification Service)
+3. Lambda
+4. CloudWatch (optional)
+
+=======
+Pricing
+=======
+
+While this code is freely distributed, using AWS Services incur charges.
+Please review AWS pricing pages before implementing this solution on your own account.
+1. IAM: free of charges.
+2. SNS: https://aws.amazon.com/sns/pricing/
+3. Lambda: https://aws.amazon.com/lambda/pricing/
+4. CloudWatch: https://aws.amazon.com/cloudwatch/pricing/
+
+=====
+Setup
+=====
+
+1. Configuring SNS
+
+1. Navigate to SNS console.
+2. Create a new topic called "TWIC".
+2.1 Navigate to "Topics".
+2.2 Click on "Create Topic".
+2.3 For "Type", select "Standard".
+2.4 For "Name", input "TWIC".
+2.5 Click on "Create Topic".
+2.6 Take note of the topic "ARN", which will be: "arn:aws:sns:REGION:AWS_ACCOUNT:TWIC".
+3. Create a new subscription under the "TWIC" topic:
+3.1 Navigate to "Subscriptions".
+3.2 Click on "Create Subscription".
+3.3 For "Topic ARN", select "TWIC".
+3.4 For "Protocol", choose "Email".
+3.5 For "Endpoint", add your e-mail address.
+3.6 Click on "Create subscription".
+4. Open your e-mail and follow the instructions received from "AWS Notifications".
+5. Test your subscription:
+5.1 Navigate to "Topics".
+5.2 Select TWIC".
+5.3 Click on "Publish message".
+5.4 Enter anything on "Subject" and "Message body".
+5.5 Confirm you have received the e-mail.
+
+2. Configuring the Lambda function.
+
+1. Navigate to Lambda console.
+2. Click on "Create function".
+3. Configure the function with the following details:
+3.1 For "Function name", enter "select_twic".
+3.2 For "Runtime", choose "Python3.8".
+3.3 For "Execution role", select "Create a new role with basic Lambda permissions".
+3.4 Take note of the name of the role, for example, "select_twic-role-c0kgbfj0".
+3.5 Click on "Create function".
+4. Deploy your function:
+4.1 For "Function code", copy and paste the code under TWICTools/python/aws/select_twic.py
+4.2 Look for the following lines to edit them. You will 
+===
+TopicArn='arn:aws:sns:REGION:AWS_ACCOUNT:TWIC',
+# define rating relevance threshold
+rating_threshold = 2300
+# define list of interesting ECO codes
+my_repertoire_list = ['A00', 'A01']
+===
+4.3 Scroll down to "Basic settings", click on "Edit", set the "Timeout" to 5 minutes and 0 seconds, click "Save".
+4.4 Click on "Deploy" to deploy the function.
+
+NOTE: if you ever want to add or remove an ECO code from your repertoire, just edit the Lambda function and click on "Deploy" again.
+
+3. Adding SNS permissions to the IAM role.
+
+1. Navigate to IAM console.
+2. Add SNS permissions to the role that has been created at step 3.4:
+2.1 Navigate to "Roles".
+2.2 Click on the TWIC role.
+2.3 Click on "Attach Policies".
+2.4 Click on "Create Policy".
+2.5 Click on "JSON".
+2.6 Add the following text:
+===
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:Publish"
+            ],
+            "Resource": "arn:aws:sns:REGION:AWS_ACCOUNT:TWIC"
+        }
+    ]
+}
+===
+2.7 Click on "Review policy".
+2.8 For name, choose "TWIC_SNS".
+2.9 Click on "Create Policy".
+2.10 Navigate to "Roles".
+2.11 Select the relevant role.
+2.12 Click on "Attach policies".
+2.13 Look for "TWIC_SNS", select it, click on "Attach policy".
+
+4. Testing the Lambda function.
+
+1. Navigate to the Lambda console.
+2. Click on "select_twic" function.
+3. Click on "Test", name it "Test" and click on "Create.
+4. Click on "Test" again.
+5. If everything ran smooth, you should see the following message on the screen:
+===
+Execution result: succeeded
+===
+6. You should also get an e-mail with your selected PGN games.
+
+=======
+Running
+=======
+
+If you wish to run TWIC Selector manually, just repeat the steps of "Testing the Lambda function" as often as you want.
+NOTE: as the name says, TWIC is released once a week, so it does not help to run it more often (unless you use a different set of ECO codes).
+
+My recommendation though is to setup a CloudWatch Alarm to run the Lambda function automatically once a week.
+
+5. Setup the CloudWatch Alarm
+
+1. Navigate to CloudWatch console.
+2. Navigate to "Rules".
+3. Click on "Create rule".
+4. For "Event source", select "Schedule".
+5. Enter a cron expression that suits you. For example, to run every Tuesday at 04:00 UTC you would use:
+===
+00 04 ? * 2 *
+===
+6. For "Target", click "Add target", "Lambda function", "select_twic".
+7. Click on "Configure details".
+8. Give it a name such as "TWIC" and click on "Create rule".
+9. If everything went as planned, you will receive your first set of selected games next Tuesday at 04:00 UTC (or according to your own cron schedule).
