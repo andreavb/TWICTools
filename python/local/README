@@ -15,19 +15,22 @@ See LICENSE file for more details.
 Usage
 =====
 
-This program is suitable to run on Linux and Mac platforms.
-It has not been tested on any Windows devices.
+This program is suitable to run on Linux, Mac and Windows platforms.
+It has been tested with Python2 (Linux/Mac) and Python3 (Linux/Mac/Windows).
 
 =====
 Setup
 =====
 
-No compiling or building is required!
+Linux/Mac: No compiling or building is required!
+Windows: Download and install Python for Windows from its website (https://www.python.org/).
 
 Download the code from Github using:
 $ git clone https://github.com/andreavb/TWICTools.git
 
-Change the variables "rating_threshold" and "my_repertoire_list" to better change your needs.
+Alternatively, download only file "python/local/select_twic.py".
+
+Change the variables "rating_threshold", "my_repertoire_list" and "my_stalk_list" to better change your needs.
 $ cd TWICTools/python/local
 $ vim select_twic.py
 
@@ -47,10 +50,10 @@ my_stalk_list = ['Carlsen, Caruana']
 Running
 =======
 
-Easy stuff. Once you changed the above variables, just run:
+Easy stuff. Once you changed the above variables, just run on your terminal/command prompt:
 $ python select_twic.py
 
 Some brand new files will appear on your working directory:
 last_twic.zip: the latest PGN file, zipped, as downloaded from TWIC page.
 twicXXXX.pgn: the latest PGN file, extracted.
-relevant.pgn: a selection of games from twicXXXX.pgn that match your rating and ECO requirements.
+relevant.pgn: a selection of games from twicXXXX.pgn that match your rating and ECO requirements or that was played by someone you follow.
