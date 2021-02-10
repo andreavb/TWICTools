@@ -1,12 +1,17 @@
 import re
-import urllib
 import zipfile
+
+import platform
+if platform.python_version().startswith('2'):
+    import urllib as ul
+else:
+    import urllib.request as ul
 
 def read_webpage():
 
     # read through TWIC page and find the link that stands for the latest issue
     twic_url = 'https://theweekinchess.com/twic'
-    str_source = urllib.urlopen(twic_url).read().decode('utf-8')
+    str_source = ul.urlopen(twic_url).read().decode('utf-8')
     last_link = re.findall(r'The latest issue.*\n', str_source)[0].split('=')[1].split(' ')[0].strip('\"')
     return last_link
 
@@ -17,7 +22,7 @@ def download_games():
 
     # download latest TWIC
     last_twic_zip_url = read_webpage().replace('.html', 'g.zip').replace('html', 'zips')
-    urllib.urlretrieve(last_twic_zip_url, input_zip_filename)
+    ul.urlretrieve(last_twic_zip_url, input_zip_filename)
 
     # handle zip file
     with zipfile.ZipFile(input_zip_filename, 'r') as zip_ref:
