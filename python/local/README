@@ -35,8 +35,12 @@ Look for the following lines to edit them:
 ===
 # define rating relevance threshold
 rating_threshold = 2300
+
 # define list of interesting ECO codes
 my_repertoire_list = ['A00', 'A01']
+
+# define players to stalk
+my_stalk_list = ['Carlsen, Caruana']
 ===
 
 =======

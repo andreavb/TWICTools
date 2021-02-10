@@ -79,13 +79,18 @@ Setup
 3.5 Click on "Create function".
 4. Deploy your function:
 4.1 For "Function code", copy and paste the code under TWICTools/python/aws/select_twic.py
-4.2 Look for the following lines to edit them. You will 
+4.2 Look for the following lines to edit them. You will need to use the TopicArn you took note in the above section, at step 2.6.
 ===
 TopicArn='arn:aws:sns:REGION:AWS_ACCOUNT:TWIC',
+
 # define rating relevance threshold
 rating_threshold = 2300
+
 # define list of interesting ECO codes
 my_repertoire_list = ['A00', 'A01']
+
+# define players to stalk
+my_stalk_list = ['Carlsen, Caruana']
 ===
 4.3 Scroll down to "Basic settings", click on "Edit", set the "Timeout" to 5 minutes and 0 seconds, click "Save".
 4.4 Click on "Deploy" to deploy the function.

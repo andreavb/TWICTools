@@ -78,10 +78,20 @@ def is_eco_relevant(pgn_game):
     # otherwise: ECO is irrelevant
     return False
 
+def is_player_relevant(pgn_game):
+
+    # define players to stalk
+    my_stalk_list = ['Carlsen, Caruana']
+
+    my_stalk_re = re.compile("|".join(my_stalk_list))
+
+    if my_stalk_re.search(pgn_game):
+        return True
+
 def is_game_relevant(pgn_game):
 
     # rating and ECO conditions are satisfied: game is relevant
-    return is_rating_relevant(pgn_game) and is_eco_relevant(pgn_game)
+    return (is_rating_relevant(pgn_game) and is_eco_relevant(pgn_game)) or is_player_relevant(pgn_game)
 
 def lambda_handler(event, context):
 
