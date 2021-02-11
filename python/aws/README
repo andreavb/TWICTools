@@ -90,7 +90,7 @@ rating_threshold = 2300
 my_repertoire_list = ['A00', 'A01']
 
 # define players to stalk
-my_stalk_list = ['Carlsen, Caruana']
+my_stalk_list = ['Carlsen', 'Caruana']
 ===
 4.3 Scroll down to "Basic settings", click on "Edit", set the "Timeout" to 5 minutes and 0 seconds, click "Save".
 4.4 Click on "Deploy" to deploy the function.

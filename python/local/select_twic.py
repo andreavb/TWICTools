@@ -72,7 +72,7 @@ def is_eco_relevant(pgn_game):
 def is_player_relevant(pgn_game):
 
     # define players to stalk
-    my_stalk_list = ['Carlsen, Caruana']
+    my_stalk_list = ['Carlsen', 'Caruana']
 
     my_stalk_re = re.compile("|".join(my_stalk_list))
 

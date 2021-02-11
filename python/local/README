@@ -43,7 +43,7 @@ rating_threshold = 2300
 my_repertoire_list = ['A00', 'A01']
 
 # define players to stalk
-my_stalk_list = ['Carlsen, Caruana']
+my_stalk_list = ['Carlsen', 'Caruana']
 ===
 
 =======
